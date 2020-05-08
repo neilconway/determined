@@ -58,7 +58,10 @@ def make_up_subparser(subparsers: argparse._SubParsersAction) -> None:
         help="network name to create (the network should not already exist in the project)",
     )
     optional_named.add_argument(
-        "--det-version", type=str, default=determined_deploy.__version__, help=argparse.SUPPRESS,
+        "--det-version",
+        type=str,
+        default=determined_deploy.__version__,
+        help="version of Determined to deploy (default: {})".format(determined_deploy.__version__),
     )
     optional_named.add_argument(
         "--region",
@@ -169,15 +172,11 @@ def make_gcp_parser(subparsers: argparse._SubParsersAction):
 
 
 def deploy_gcp(args: argparse.Namespace) -> None:
-
     # Set the TF_DATA_DIR where Terraform will store its supporting files
     env = os.environ.copy()
     env["TF_DATA_DIR"] = os.path.join(args.local_state_path, "terraform_data")
 
-    # Create det_configs dictionary
     det_configs = {}
-
-    # Add args to det_configs dict
     for arg in vars(args):
         if vars(args)[arg] is not None:
             det_configs[arg] = vars(args)[arg]
@@ -192,7 +191,6 @@ def deploy_gcp(args: argparse.Namespace) -> None:
 
     # Delete
     if args.command == "down":
-
         # Set placeholders for required variables
         det_configs["cluster_id"] = "will-be-ignored"
         det_configs["project_id"] = "will-be-ignored"
@@ -214,4 +212,4 @@ def deploy_gcp(args: argparse.Namespace) -> None:
     print("Starting Determined Deployment")
     gcp.deploy(det_configs, env, variables_to_exclude)
     print("\nDetermined Deployment Successful")
-    print("Please allow 1-5 minutes for the master instance to be accessible via the web-ui\n")
+    print("Please allow 1-5 minutes for the master instance to be accessible via the WebUI\n")
