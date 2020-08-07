@@ -6,6 +6,11 @@ Release Notes
 Version 0.12
 ------------
 
+Version 0.12.14
+^^^^^^^^^^^^^^^
+
+**Release Date:** August 6, 2020
+
 Version 0.12.13
 ^^^^^^^^^^^^^^^
 
